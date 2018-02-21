@@ -1,0 +1,77 @@
+﻿
+<style type="text/css">
+    .table {
+        font-family: Vardana;
+        font-size: 15px;
+        font-weight: normal;
+        display: table;
+        border-collapse: collapse;
+        border: solid px #C5C5C5;
+    }
+
+        .table td, th {
+            border: 1px solid #C5C5C5;
+            padding: 3px 7px 2px;
+            background-color: #C5C5C5;
+            color: #ffffff;
+        }
+
+        .table td {
+            border: 1px solid #C5C5C5;
+            background-color: #C5C5C5;
+            color: #000000;
+            font-family: Vardana;
+        }
+</style>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" />
+ 
+  
+<script type="text/javascript">
+        $(document).ready(function () {
+           
+            var ulEmployees = $('#tbDetails');
+            $('#btn').click(function () {
+               
+                var URL = "/api/Employee/";  /* hardcoded URL ? , should be cleanedup */
+                if ($("#txt").val() != 0)
+                    URL = URL + $("#txt").val();
+               /* Binding needs to revisted, can use React.js + babel */
+                $.ajax({
+                    type: 'GET',
+                    url: URL,
+                    dataType: 'json',
+                    success: function (data) {
+                        ulEmployees.empty();
+                        $.each(data, function (index, val) {
+                            //debugger;
+
+                            var row = '<tr><td> ' + val.id + ' </td> <td> ' + val.name + ' </td> <td>' + val.contractTypeName + '</td> <td>' + val.roleName + '</td> <td>' + val.hourlySalary + '</td> <td>' + val.monthlySalary + '</td> <td>' + val.annualSalary + '</td> </tr>'
+                            $("#tbDetails").append(row);
+
+                        });
+                    }
+                });
+            });
+           
+        });
+</script>
+<table id="tbDetails"  border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Contract Type Name</th>
+            <th>Role Name</th>
+            <th>Hourly Salary</th>
+            <th>Monthly Salary</th>
+            <th>Annual Salary</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<input id="txt" type="text" value="" />
+<input id="btn" type="button"  value="Get All Employees" />
+     
